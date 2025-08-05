@@ -1,0 +1,107 @@
+ULTIMATE ADDRESS MATCHER - QUICK START GUIDE
+=============================================
+
+INSTALLATION
+------------
+1. Install required packages:
+   pip install usaddress unidecode rapidfuzz requests pydantic tqdm
+
+2. Ensure you have both files:
+   - ultimate_address_matcher.py
+   - optimized.py
+
+BASIC USAGE
+-----------
+
+1. Test the system (run built-in tests):
+   python ultimate_address_matcher.py
+
+2. Match a single address in Python:
+   
+   from ultimate_address_matcher import UltimateAddressMatcher
+   
+   matcher = UltimateAddressMatcher()
+   result = matcher.match_address("85-101 North 3rd Street Brooklyn, NY 11249", "your_index")
+   
+   if result.is_reliable:
+       print(f"Match: {result.original_result.matched}")
+       print(f"Quality: {result.quality_score}")
+   else:
+       print("No reliable match")
+
+3. Command line usage (using the optimized base system):
+   
+   # Single address
+   python optimized.py "123 Main Street Brooklyn NY 11201"
+   
+   # Batch file processing
+   python optimized.py --batch-file addresses.txt --output results.csv
+
+COMMON PATTERNS
+---------------
+
+Parse address components:
+   components = matcher.parse_address("1H 55 Berry Street Brooklyn, NY 11211")
+   print(f"Unit: {components.unit}, House: {components.house_number}")
+
+Generate address variants:
+   variants = matcher.generate_variants("3R 112 Bedford Avenue Brooklyn, NY")
+   for variant in variants:
+       print(variant)
+
+Batch processing:
+   addresses = ["addr1", "addr2", "addr3"]
+   for addr in addresses:
+       result = matcher.match_address(addr, "index_name")
+       print(f"{addr} -> {result.reliability}")
+
+CONFIGURATION
+-------------
+
+Default Elasticsearch connection:
+   URL: https://search-addresses-f7voryraair5mrpw73ub2v3yg4.aos.us-east-1.on.aws
+   User: intern_3
+   Password: Trustscout1!
+
+Override with environment variables:
+   export ES_URL="your-url"
+   export ES_USER="your-user"
+   export ES_PWD="your-password"
+
+MATCHING LEVELS
+---------------
+1. Exact (≥95%)      - Perfect matches
+2. Relaxed (≥85%)    - High quality
+3. Partial (≥75%)    - Good matches
+4. Geographic (≥65%) - Location-based
+5. Fuzzy (≥55%)      - String similarity
+6. Ultra Fuzzy (≥45%) - More lenient
+7. Semantic (≥35%)   - Meaning-based
+8. Phonetic (≥25%)   - Sound-based
+9. Keyword (≥15%)    - Keyword matching
+10. Desperate (≥5%)  - Last resort
+
+RESULT QUALITY
+--------------
+- is_reliable: High/medium quality, score ≥50
+- is_questionable: Low quality but usable, score ≥25
+- is_speculative: Very low quality
+- warning_flags: List of issues/warnings
+
+TROUBLESHOOTING
+---------------
+- ImportError: Run "pip install usaddress"
+- Connection errors: Check ES_URL and credentials
+- Low match rates: Verify index field mappings
+- Unit issues: Check APTNBR field exists in your index
+
+EXAMPLES
+--------
+
+Test addresses that work well:
+- "85-101 North 3rd Street Brooklyn, NY 11249"
+- "3R 112 Bedford Avenue Brooklyn, NY 11211"  
+- "1H 55 Berry Street Brooklyn, NY 11211"
+- "21F 22 NORTH 6 STREET Brooklyn, NY 11249"
+
+For more detailed documentation, see README.md 
