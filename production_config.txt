@@ -1,0 +1,62 @@
+# Production Environment Configuration Guide
+# ===========================================
+
+📋 SCOUT CREDENTIALS Configuration (Verified Working)
+====================================================
+
+Environment Variables:
+ES_URL=https://search-addresses-f7voryraair5mrpw73ub2v3yg4.aos.us-east-1.on.aws
+ES_USER=scout
+ES_PWD=Trustscout1!
+
+🔧 Setup Methods:
+================
+
+Method 1: Lambda Function Environment Variables (Recommended for n8n)
+Set in AWS Lambda console:
+- ES_USER = scout
+- ES_PWD = Trustscout1!
+- ES_URL = https://search-addresses-f7voryraair5mrpw73ub2v3yg4.aos.us-east-1.on.aws
+
+Method 2: Local Development Environment Variables
+export ES_USER="scout"
+export ES_PWD="Trustscout1!"
+export ES_URL="https://search-addresses-f7voryraair5mrpw73ub2v3yg4.aos.us-east-1.on.aws"
+
+Method 3: Direct Python Code Setting (Not Recommended)
+os.environ['ES_USER'] = 'scout'
+os.environ['ES_PWD'] = 'Trustscout1!'
+
+✅ Verification Status:
+======================
+✅ Scout account verified for tci_base_staging_data access
+✅ Successfully upgraded from intern_3 to scout  
+✅ 10,000+ real records access permission
+✅ Real Address ID extraction functionality
+✅ n8n workflow integration ready
+
+🎯 Usage in Code:
+================
+# Code automatically reads environment variables with priority:
+# 1. Environment variable ES_USER (if set)
+# 2. Default value "scout" (updated)
+
+from ultimate_address_matcher import UltimateAddressMatcher
+matcher = UltimateAddressMatcher()  # Automatically uses scout credentials
+
+🚨 Important Notes:
+==================
+1. If your boss is already using these credentials, ensure environment variables are properly set
+2. Test files won't affect production code (contained in "if __name__ == '__main__'" blocks)
+3. Import only loads classes and functions, won't execute test code
+4. Lambda functions only need environment variables set to work
+
+🔍 Verify Configuration is Correct:
+===================================
+Run test script to confirm:
+python test_scout_integration.py
+
+Should see:
+✅ Account credentials: Scout
+✅ Real data access: Yes
+✅ n8n workflow ready: Yes 
